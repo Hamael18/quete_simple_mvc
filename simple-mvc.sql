@@ -17,10 +17,12 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de données :  `simple-mvc`
+-- Current Database: `simplemvc`
 --
 
--- --------------------------------------------------------
+CREATE DATABASE /*!32312 IF NOT EXISTS*/ `simplemvc` /*!40100 DEFAULT CHARACTER SET latin1 */;
+
+USE `simplemvc`;
 
 --
 -- Structure de la table `item`

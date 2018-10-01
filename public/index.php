@@ -1,4 +1,12 @@
-<!doctype html>
+<?php
+require __DIR__ . '/../src/Controller/ItemController.php';
+
+
+
+
+
+
+/*<!doctype html>
 <html lang="fr">
 <head>
     <meta charset="utf-8">
@@ -11,6 +19,7 @@
 </head>
 
 <?php
+/*
 // connection BDD (définir les constantes dans un fichier app.php qui sera inclus)
 require '../app/db.php';
 $pdo = new \PDO(DSN, USER, PASS);
@@ -32,4 +41,4 @@ $items = $res->fetchAll();
         </ul>
     </section>
 </body>
-</html>
+</html> */
