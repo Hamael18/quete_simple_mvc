@@ -1,0 +1,16 @@
+{
+    "name": "wilder/quete_simple_mvc",
+    "authors": [
+        {
+            "name": "Julie Trannois",
+            "email": "trannois.julie@gmail.com"
+        }
+    ],
+    "require": {},
+
+    "autoload": {
+        "psr-4": {
+            "": "src/"
+        }
+    }
+}
