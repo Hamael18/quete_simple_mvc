@@ -1,31 +1,44 @@
 <?php
 // src/Model/ItemManager.php
 namespace Model;
-require __DIR__ . '/../../app/db.php';
+use Model\Item;
 
-// récupération de tous les items
+class ItemManager extends AbstractManager
+{
+    const TABLE = 'item';
 
+    public function __construct($pdo)
+    {
+        parent::__construct(self::TABLE,$pdo);
+    }
 
-
-        class ItemManager
-        {
-            public function selectAllItems(): array
-            {
-                $pdo = new \PDO(DSN, USER, PASS);
-                $query = "SELECT * FROM item";
-                $res = $pdo->query($query);
-                return $res->fetchAll();
-            }
-            public function selectOneItem(int $id) : array
-            {
-                $pdo = new \PDO(DSN, USER, PASS);
-                $query = "SELECT * FROM item WHERE id = :id";
-                $statement = $pdo->prepare($query);
-                $statement->bindValue(':id', $id, \PDO::PARAM_INT);
-                $statement->execute();
-                // contrairement à fetchAll(), fetch() ne renvoie qu'un seul résultat
-                return $statement->fetch();
-            }
+    public function insert(Item $item): int
+    {
+        $statement = $this->pdo->prepare("INSERT INTO " . self::TABLE . " (`title`) VALUES (:title)");
+        $statement->bindValue('title', $item->getTitle(), \PDO::PARAM_STR);
+        if ($statement->execute()) {
+            return $this->pdo->lastInsertId();
         }
+    }
+    public function update(Item $item)
+    {
+        $statement = $this->pdo->prepare("UPDATE " . self::TABLE . " SET title = :title WHERE id = :id");
+        $statement->bindValue('title', $item->getTitle(), \PDO::PARAM_STR);
+        $statement->bindValue('id', $item->getId(), \PDO::PARAM_INT);
+        return $statement->execute();
+
+    }
+
+    public function delete(Item $item)
+    {
+        $statement = $this->pdo->prepare("DELETE FROM " . self::TABLE . " WHERE id = :id");
+        $statement->bindValue('id', $item->getId(), \PDO::PARAM_INT);
+        return $statement->execute();
+
+    }
+
+}
+
+
 
 ?>

@@ -1,29 +1,42 @@
 <?php
 // src/Model/CategoryManager.php
 namespace Model;
-require __DIR__ . '/../../app/db.php';
+use Model\Category;
 
-// récupération de tous les categories
+class CategoryManager extends AbstractManager
+{
+    const TABLE = 'category';
 
-class CategoryManager
+    public function __construct($pdo)
     {
-    public function selectAllCategories(): array
+        parent::__construct(self::TABLE, $pdo);
+    }
+
+    public function insert(Category $category): int
     {
-    $pdo = new \PDO(DSN, USER, PASS);
-    $query = "SELECT * FROM category";
-    $res = $pdo->query($query);
-    return $res->fetchAll();
+        $statement = $this->pdo->prepare("INSERT INTO " . self::TABLE . " (`name`) VALUES (:name)");
+        $statement->bindValue('name', $category->getName(), \PDO::PARAM_STR);
+        if ($statement->execute()) {
+            return $this->pdo->lastInsertId();
+        }
     }
-    public function selectOneCategory(int $id) : array
+    public function update(Category $category)
     {
-    $pdo = new \PDO(DSN, USER, PASS);
-    $query = "SELECT * FROM category WHERE id = :id";
-    $statement = $pdo->prepare($query);
-    $statement->bindValue(':id', $id, \PDO::PARAM_INT);
-    $statement->execute();
-    // contrairement à fetchAll(), fetch() ne renvoie qu'un seul résultat
-    return $statement->fetch();
+        $statement = $this->pdo->prepare("UPDATE " . self::TABLE . " SET name = :name WHERE id = :id");
+        $statement->bindValue('name', $category->getName(), \PDO::PARAM_STR);
+        $statement->bindValue('id', $category->getId(), \PDO::PARAM_INT);
+        return $statement->execute();
+
     }
+
+    public function delete(Category $category)
+    {
+        $statement = $this->pdo->prepare("DELETE FROM " . self::TABLE . " WHERE id = :id");
+        $statement->bindValue('id', $category->getId(), \PDO::PARAM_INT);
+        return $statement->execute();
+
     }
+
+}
 
 ?>
